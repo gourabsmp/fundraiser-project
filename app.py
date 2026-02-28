@@ -13,25 +13,36 @@ def get_image(base_name):
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Help Save My Father", page_icon="❤️", layout="centered")
 
-# --- EMOTIONAL & WARM CSS ---
+# --- CSS FIX FOR CURSOR, TYPING & THEME ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
 
     .stApp {
-        background-color: #fbf9f6;
+        background-color: #fbf9f6; 
         color: #2b3a42;
         font-family: 'Inter', sans-serif;
     }
     
-    /* --- CRITICAL TEXT VISIBILITY FIX --- */
-    /* This forces the text you type to be BLACK and visible */
+    /* --- TYPING & CURSOR VISIBILITY FIX --- */
     input, textarea {
         color: #000000 !important;
         -webkit-text-fill-color: #000000 !important;
+        caret-color: #000000 !important; /* Forces the blinking line cursor to be visible */
     }
 
-    /* Target the form to be a white card with visible inputs */
+    div[data-baseweb="base-input"], div[data-baseweb="textarea"] {
+        background-color: #ffffff !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 4px !important;
+    }
+
+    /* Blue focus line when typing */
+    div[data-baseweb="base-input"]:focus-within, div[data-baseweb="textarea"]:focus-within {
+        border-color: #007bff !important;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+
     [data-testid="stForm"] {
         background-color: #ffffff !important;
         padding: 30px !important;
@@ -44,22 +55,19 @@ st.markdown("""
         font-weight: 600 !important;
     }
 
-    div[data-baseweb="base-input"], div[data-baseweb="textarea"] {
-        background-color: #ffffff !important;
-        border: 1px solid #d1d5db !important;
-    }
-
-    /* --- REST OF YOUR ORIGINAL STYLES --- */
+    /* Original Styles */
     .hero-title { font-family: 'Playfair Display', serif; color: #1a252f; text-align: center; font-size: 3.2em; font-weight: 700; margin-bottom: 5px; line-height: 1.2; }
     .hero-subtitle { font-family: 'Inter', sans-serif; text-align: center; color: #e63946; font-size: 1.2em; margin-bottom: 35px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
     .campaign-stats-container { background-color: #ffffff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); margin-bottom: 40px; border-top: 5px solid #e63946; }
     .stats-flex { display: flex; justify-content: space-between; margin-bottom: 20px; }
-    .stat-label { font-size: 0.95em; color: #7f8c8d; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-    .stat-value { font-family: 'Playfair Display', serif; font-size: 2.5em; font-weight: 700; color: #1a252f; margin-top: 5px; }
-    .custom-progress-bg { background-color: #f0f2f5; border-radius: 20px; height: 22px; width: 100%; overflow: hidden; margin-bottom: 10px; }
-    .custom-progress-fill { background: linear-gradient(90deg, #f4a261, #e76f51, #2a9d8f); height: 100%; border-radius: 20px; transition: width 1.5s ease-in-out; }
+    .stat-label { font-size: 0.95em; color: #7f8c8d; font-weight: 600; text-transform: uppercase; }
+    .stat-value { font-family: 'Playfair Display', serif; font-size: 2.5em; font-weight: 700; color: #1a252f; }
+    .custom-progress-bg { background-color: #f0f2f5; border-radius: 20px; height: 22px; width: 100%; overflow: hidden; }
+    .custom-progress-fill { background: linear-gradient(90deg, #f4a261, #e76f51, #2a9d8f); height: 100%; border-radius: 20px; }
     .story-card { background-color: #ffffff; padding: 50px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); line-height: 1.9; font-size: 1.15em; margin-bottom: 40px; color: #4a5568; position: relative; }
-    .donate-card { background-color: #ffffff; padding: 35px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.04); border: 1px solid #edf2f7; flex: 1; transition: transform 0.3s ease; }
+    .story-card::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 6em; color: #fceceb; position: absolute; top: 10px; left: 20px; line-height: 1; z-index: 0; }
+    .story-content { position: relative; z-index: 1; }
+    .donate-card { background-color: #ffffff; padding: 35px; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.04); border: 1px solid #edf2f7; flex: 1; }
     .card-header { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5em; color: #1a252f; margin-bottom: 20px; text-align: center; border-bottom: 1px solid #edf2f7; padding-bottom: 15px; }
     .bank-details-list { list-style: none; padding: 0; color: #4a5568; font-size: 1.1em; line-height: 2; }
     .bank-details-list li span { font-weight: 600; color: #2d3748; display: inline-block; width: 140px; }
@@ -70,7 +78,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- HEADER & FATHER'S PHOTO ---
+# --- HEADER & PHOTO ---
 st.markdown("<h1 class='hero-title'>Help Me Save My Father</h1>", unsafe_allow_html=True)
 st.markdown("<p class='hero-subtitle'>Medical Fundraiser for Samir Singha Mahapatra</p>", unsafe_allow_html=True)
 
@@ -92,19 +100,26 @@ st.markdown(f"""
         <div class='stat-box' style='text-align: right;'><div class='stat-label'>Target Goal</div><div class='stat-value target'>₹{target_amount:,}</div></div>
     </div>
     <div class='custom-progress-bg'><div class='custom-progress-fill' style='width: {max(progress_percent, 2)}%;'></div></div>
+    <div style='text-align: right; color: #718096; font-size: 0.95em; margin-top: 10px; font-weight: 600;'>{progress_percent:.1f}% Funded</div>
 </div>
 """, unsafe_allow_html=True)
 
-# --- STORY ---
+# --- THE STORY (PREVIOUS LONG VERSION RESTORED) ---
 st.markdown("""
-<div class='story-card'><div class='story-content'>
-    <h3>A Son's Appeal</h3>
-    <p>Recently, our world came to a halt when my father was diagnosed with Stage 1 cancer. Surgery is March 3rd. I am working night shifts, but we cannot do this alone. Your kindness means everything.</p>
-    <p style='margin-top: 30px;'><i>With a grateful heart,</i><br><b>— Gourab Singha Mahapatra</b></p>
-</div></div>
+<div class='story-card'>
+    <div class='story-content'>
+        <h3 style='text-align: center; color: #2c3e50; font-family: "Playfair Display", serif; font-size: 2em; margin-bottom: 25px;'>A Son's Appeal</h3>
+        <p>To everyone reading this, my father, <b>Samir Singha Mahapatra</b>, has always been the strongest pillar of our family. He has spent his life working hard to provide for us, always putting our needs before his own.</p>
+        <p>Recently, our world came to a sudden and terrifying halt when he was diagnosed with Stage 1 cancer. While catching it at Stage 1 gives us immense hope for a full recovery, his critical surgery is scheduled for <b>March 3rd</b>, and the comprehensive care required will cost approximately <b>₹5,00,000</b>.</p>
+        <p>I am working long night shifts, doing everything in my power to support my family through this crisis, but the reality is that the financial weight of this sudden medical emergency is more than we can carry alone right now.</p>
+        <p>It is not easy to ask for financial help, but watching someone you love fight for their health changes everything. I am humbly asking for your support. Your contribution—no matter the size—will directly fund his surgery and give my father the fighting chance he so deeply deserves.</p>
+        <p>If you cannot donate today, simply sharing this page with your network means the absolute world to us. Thank you for your prayers, your kindness, and for standing by our family during our darkest hour.</p>
+        <p style='margin-top: 30px; font-size: 1.1em; color: #2c3e50;'><i>With a grateful heart,</i><br><b>— Gourab Singha Mahapatra</b></p>
+    </div>
+</div>
 """, unsafe_allow_html=True)
 
-# --- DONATION SECTION ---
+# --- HOW TO DONATE ---
 st.markdown("<h2 class='section-header'>How You Can Help</h2>", unsafe_allow_html=True)
 col_qr, col_bank = st.columns([1, 1.3])
 with col_qr:
@@ -121,7 +136,7 @@ with col_bank:
             <li><span>Bank Name:</span> State Bank of India</li>
         </ul></div>""", unsafe_allow_html=True)
 
-# --- TRANSPARENCY & DOCS ---
+# --- TRANSPARENCY ---
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<h2 class='section-header'>Transparency</h2>", unsafe_allow_html=True)
 col_rep1, col_rep2 = st.columns(2)
@@ -132,7 +147,7 @@ with col_rep2:
     s_img = get_image("scan")
     if s_img: st.image(s_img, use_container_width=True)
 
-# --- MESSAGE FORM ---
+# --- FORM (CURSOR FIXED) ---
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<h2 class='section-header'>Leave a Message of Support</h2>", unsafe_allow_html=True)
 
