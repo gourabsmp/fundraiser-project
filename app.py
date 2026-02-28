@@ -9,107 +9,127 @@ def get_image(base_name):
     return None
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="Fundraiser: Help Samir Singha Mahapatra", page_icon="🤍", layout="centered")
+st.set_page_config(page_title="Help Save My Father", page_icon="❤️", layout="centered")
 
-# --- PREMIUM CROWDFUNDING CSS ---
+# --- EMOTIONAL & WARM CSS ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
 
     .stApp {
-        background-color: #f4f7f9;
+        background-color: #fbf9f6; /* Very soft, warm, comforting background */
         color: #2b3a42;
         font-family: 'Inter', sans-serif;
     }
     
     /* Headers */
     .hero-title {
+        font-family: 'Playfair Display', serif;
         color: #1a252f;
         text-align: center;
-        font-size: 3em;
-        font-weight: 800;
+        font-size: 3.2em;
+        font-weight: 700;
         margin-bottom: 5px;
         line-height: 1.2;
-        letter-spacing: -0.5px;
     }
     .hero-subtitle {
+        font-family: 'Inter', sans-serif;
         text-align: center;
-        color: #7f8c8d;
-        font-size: 1.3em;
+        color: #e63946; /* Heartfelt soft red */
+        font-size: 1.2em;
         margin-bottom: 35px;
-        font-weight: 400;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
     }
 
     /* Target & Progress Section */
     .campaign-stats-container {
         background-color: #ffffff;
-        padding: 35px;
+        padding: 40px;
         border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05);
         margin-bottom: 40px;
-        border-top: 6px solid #10b981; /* Trustworthy Green */
+        border-top: 5px solid #e63946;
     }
     .stats-flex {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
     .stat-box {
         text-align: left;
     }
     .stat-label {
-        font-size: 1em;
+        font-size: 0.95em;
         color: #7f8c8d;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
     .stat-value {
-        font-size: 2.2em;
-        font-weight: 800;
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5em;
+        font-weight: 700;
         color: #1a252f;
         margin-top: 5px;
     }
     .stat-value.target {
         color: #95a5a6;
-        font-size: 1.6em;
-        margin-top: 12px;
+        font-size: 1.8em;
+        margin-top: 15px;
     }
     
-    /* Custom Thick Progress Bar */
+    /* Warm Sunrise Progress Bar */
     .custom-progress-bg {
-        background-color: #e2e8f0;
+        background-color: #f0f2f5;
         border-radius: 20px;
-        height: 24px;
+        height: 22px;
         width: 100%;
         overflow: hidden;
         margin-bottom: 10px;
     }
     .custom-progress-fill {
-        background: linear-gradient(90deg, #10b981, #34d399);
+        background: linear-gradient(90deg, #f4a261, #e76f51, #2a9d8f);
         height: 100%;
         border-radius: 20px;
-        transition: width 1s ease-in-out;
+        transition: width 1.5s ease-in-out;
     }
     
-    /* The Story Box */
+    /* The Story Box - Designed like a heartfelt letter */
     .story-card {
         background-color: #ffffff;
-        padding: 45px;
+        padding: 50px;
         border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        line-height: 1.8;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        line-height: 1.9;
         font-size: 1.15em;
         margin-bottom: 40px;
-        color: #34495e;
+        color: #4a5568;
+        position: relative;
+    }
+    .story-card::before {
+        content: '"';
+        font-family: 'Playfair Display', serif;
+        font-size: 6em;
+        color: #fceceb;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        line-height: 1;
+        z-index: 0;
+    }
+    .story-content {
+        position: relative;
+        z-index: 1;
     }
     .story-card h3 {
-        color: #1a252f;
+        font-family: 'Playfair Display', serif;
+        color: #2c3e50;
         font-weight: 700;
-        font-size: 1.6em;
-        margin-bottom: 20px;
-        border-bottom: 2px solid #f0f2f5;
-        padding-bottom: 10px;
+        font-size: 2em;
+        margin-bottom: 25px;
+        text-align: center;
     }
     
     /* Donation Cards */
@@ -120,75 +140,77 @@ st.markdown("""
     }
     .donate-card {
         background-color: #ffffff;
-        padding: 30px;
+        padding: 35px;
         border-radius: 16px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-        border: 1px solid #e2e8f0;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+        border: 1px solid #edf2f7;
         flex: 1;
-        transition: transform 0.2s ease;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .donate-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-        border-color: #3b82f6; /* Highlight Blue */
+        box-shadow: 0 15px 35px rgba(230, 57, 70, 0.1);
+        border-color: #e63946;
     }
     .card-header {
+        font-family: 'Playfair Display', serif;
         font-weight: 700;
-        font-size: 1.3em;
+        font-size: 1.5em;
         color: #1a252f;
         margin-bottom: 20px;
         text-align: center;
         padding-bottom: 15px;
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #edf2f7;
     }
     .bank-details-list {
         list-style: none;
         padding: 0;
         margin: 0;
-        color: #34495e;
+        color: #4a5568;
         font-size: 1.1em;
-        line-height: 1.9;
+        line-height: 2;
     }
     .bank-details-list li span {
-        font-weight: 700;
-        color: #1a252f;
+        font-weight: 600;
+        color: #2d3748;
         display: inline-block;
         width: 140px;
     }
     .upi-highlight {
-        background-color: #eff6ff;
-        color: #1e3a8a;
-        padding: 10px 15px;
+        background-color: #fff5f5;
+        color: #c53030;
+        padding: 12px 15px;
         border-radius: 8px;
         font-weight: 700;
         text-align: center;
         font-size: 1.2em;
-        margin-top: 15px;
-        border: 1px dashed #93c5fd;
+        margin-top: 20px;
+        border: 1px dashed #feb2b2;
     }
 
     .section-header {
+        font-family: 'Playfair Display', serif;
         text-align: center; 
         color: #1a252f; 
-        font-size: 2.2em;
-        font-weight: 800;
+        font-size: 2.4em;
+        font-weight: 700;
         margin-bottom: 30px;
     }
     
     .caption-text {
         text-align: center; 
-        color: #7f8c8d; 
+        color: #a0aec0; 
         font-size: 0.9em;
         font-style: italic;
-        margin-top: 10px;
+        margin-top: 12px;
     }
     
-    hr { border: 0; height: 1px; background: #cbd5e1; margin: 50px 0; }
+    hr { border: 0; height: 1px; background: #e2e8f0; margin: 50px 0; }
     </style>
 """, unsafe_allow_html=True)
 
 # --- HEADER ---
-st.markdown("<h1 class='hero-title'>Support My Father's Treatment</h1>", unsafe_allow_html=True)
+st.markdown("<h1 class='hero-title'>Help Me Save My Father</h1>", unsafe_allow_html=True)
 st.markdown("<p class='hero-subtitle'>Medical Fundraiser for Samir Singha Mahapatra</p>", unsafe_allow_html=True)
 
 # --- FATHER'S PHOTO ---
@@ -199,11 +221,11 @@ if father_img:
         st.image(father_img, use_container_width=True)
         st.markdown("<p class='caption-text'>My Father, Samir Singha Mahapatra</p>", unsafe_allow_html=True)
 
-# --- NEW: HIGH-IMPACT FUNDRAISING PROGRESS ---
+# --- THE GOAL & PROGRESS ---
 target_amount = 500000 # 5 Lakhs
 raised_amount = 35000  # Amount currently raised
 progress_percent = min((raised_amount / target_amount) * 100, 100)
-display_percent = max(progress_percent, 2) # Ensures the green bar is at least slightly visible even at 1%
+display_percent = max(progress_percent, 2) 
 
 st.markdown(f"""
 <div class='campaign-stats-container'>
@@ -220,62 +242,66 @@ st.markdown(f"""
     <div class='custom-progress-bg'>
         <div class='custom-progress-fill' style='width: {display_percent}%;'></div>
     </div>
-    <div style='text-align: right; color: #7f8c8d; font-size: 0.9em; margin-top: 8px; font-weight: 600;'>
-        {progress_percent:.1f}% Funded
+    <div style='text-align: right; color: #718096; font-size: 0.95em; margin-top: 10px; font-weight: 600;'>
+        {progress_percent:.1f}% Funded • Together we can reach this
     </div>
 </div>
 """, unsafe_allow_html=True)
 
 
-# --- THE STORY ---
+# --- THE STORY (EMOTIONAL COPY) ---
 st.markdown("""
 <div class='story-card'>
-    <h3>Our Challenge</h3>
-    <p>I am writing to share a personal challenge my family is currently facing. My father, <b>Samir Singha Mahapatra</b>, was recently diagnosed with Stage 1 cancer.</p>
-    <p>We are entirely focused on his treatment and recovery, but the financial requirement for his comprehensive care is approximately <b>5 lakhs</b>.</p>
-    <p>I have always valued the strength of our community, and I am humbly asking for your support during this time. Any contribution toward his treatment fund would significantly ease the burden on my family as we navigate this journey together.</p>
-    <p>Thank you for your thoughts, prayers, and generosity.</p>
-    <p style='margin-top: 25px; font-size: 1.1em;'><b>— Gourab Singha Mahapatra</b></p>
+    <div class='story-content'>
+        <h3>A Son's Appeal</h3>
+        <p>To everyone reading this, my father, <b>Samir Singha Mahapatra</b>, has always been the strongest pillar of our family. He has spent his life working hard to provide for us, always putting our needs before his own.</p>
+        <p>Recently, our world came to a sudden and terrifying halt when he was diagnosed with Stage 1 cancer. While catching it at Stage 1 gives us immense hope for a full recovery, his critical surgery is scheduled for <b>March 3rd</b>, and the comprehensive care required will cost approximately <b>₹5,00,000</b>.</p>
+        <p>I am working long night shifts, doing everything in my power to support my family through this crisis, but the reality is that the financial weight of this sudden medical emergency is more than we can carry alone right now.</p>
+        <p>It is not easy to ask for financial help, but watching someone you love fight for their health changes everything. I am humbly asking for your support. Your contribution—no matter the size—will directly fund his surgery and give my father the fighting chance he so deeply deserves.</p>
+        <p>If you cannot donate today, simply sharing this page with your network means the absolute world to us. Thank you for your prayers, your kindness, and for standing by our family during our darkest hour.</p>
+        <p style='margin-top: 30px; font-size: 1.1em; color: #2c3e50;'><i>With a grateful heart,</i><br><b>— Gourab Singha Mahapatra</b></p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
 
-# --- HOW TO DONATE (PREMIUM CARDS) ---
-st.markdown("<h2 class='section-header'>How to Contribute</h2>", unsafe_allow_html=True)
+# --- HOW TO DONATE ---
+st.markdown("<h2 class='section-header'>How You Can Help</h2>", unsafe_allow_html=True)
 
 col_qr, col_bank = st.columns([1, 1.3])
 
 with col_qr:
     st.markdown("""
     <div class='donate-card'>
-        <div class='card-header'>📲 Scan & Pay (UPI)</div>
+        <div class='card-header'>📲 Scan & Pay</div>
     """, unsafe_allow_html=True)
     
     qr_img = get_image("qr_code")
     if qr_img:
         st.image(qr_img, use_container_width=True)
     else:
-        st.info("QR Code will appear here. (Please rename your image file on GitHub to exactly 'qr_code.jpeg' or 'qr_code.png')")
+        st.info("Please rename your image file on GitHub to exactly 'qr_code.jpeg' or 'qr_code.png'")
         
     st.markdown("""
         <div class='upi-highlight'>ID: gourabsmp-1@oksbi</div>
-        <p style='text-align: center; color: #7f8c8d; margin-top: 10px; font-size: 0.9em;'>GPay / PhonePe / Paytm</p>
+        <p style='text-align: center; color: #718096; margin-top: 10px; font-size: 0.9em; font-weight: 600;'>GPay / PhonePe / Paytm</p>
     </div>
     """, unsafe_allow_html=True)
 
 with col_bank:
     st.markdown("""
     <div class='donate-card' style='height: 100%;'>
-        <div class='card-header'>🏦 Direct Bank Transfer</div>
+        <div class='card-header'>🏦 Bank Transfer</div>
         <ul class='bank-details-list'>
             <li><span>Account Name:</span> Gourab Singha Mahapatra</li>
             <li><span>Account No:</span> 34085907201</li>
             <li><span>IFSC Code:</span> SBIN0014054</li>
             <li><span>Bank Name:</span> State Bank of India</li>
         </ul>
-        <div style='margin-top: 30px; padding-top: 20px; border-top: 1px dashed #e2e8f0;'>
+        <div style='margin-top: 30px; padding-top: 25px; border-top: 1px dashed #e2e8f0;'>
+            <p style='color: #718096; font-size: 0.9em; margin-bottom: 5px; font-weight: 600;'>Alternatively, you can use:</p>
             <ul class='bank-details-list'>
-                <li><span>Google Pay (No):</span> 9749168189</li>
+                <li><span>Google Pay:</span> 9749168189</li>
             </ul>
         </div>
     </div>
@@ -285,15 +311,15 @@ st.markdown("<hr>", unsafe_allow_html=True)
 
 
 # --- TRANSPARENCY & MEDICAL DOCUMENTS ---
-st.markdown("<h2 class='section-header'>Medical Transparency</h2>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #7f8c8d; margin-bottom: 35px; font-size: 1.1em;'>Official medical records from Disha Eye Hospitals.</p>", unsafe_allow_html=True)
+st.markdown("<h2 class='section-header'>Transparency</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #718096; margin-bottom: 40px; font-size: 1.1em;'>We believe in complete transparency. Below are the official medical records from Disha Eye Hospitals.</p>", unsafe_allow_html=True)
 
 col_rep1, col_rep2 = st.columns(2)
 with col_rep1:
     prescription_img = get_image("prescription")
     if prescription_img:
         st.image(prescription_img, use_container_width=True)
-        st.markdown("<p class='caption-text'>Medical Prescription & Plan</p>", unsafe_allow_html=True)
+        st.markdown("<p class='caption-text'>Medical Prescription & Surgery Plan</p>", unsafe_allow_html=True)
 with col_rep2:
     scan_img = get_image("scan")
     if scan_img:
@@ -301,4 +327,4 @@ with col_rep2:
         st.markdown("<p class='caption-text'>Initial Medical Scan</p>", unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #95a5a6; font-size: 1.1em;'>For any queries or updates, please reach out to me directly.</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #a0aec0; font-size: 1.1em;'>For any queries, please reach out to me directly.</p>", unsafe_allow_html=True)
