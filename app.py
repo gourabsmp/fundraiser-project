@@ -200,8 +200,8 @@ if father_img:
         st.markdown("<p class='caption-text'>My Father, Samir Singha Mahapatra</p>", unsafe_allow_html=True)
 
 # --- NEW: HIGH-IMPACT FUNDRAISING PROGRESS ---
-target_amount = 1200000 # 12 Lakhs
-raised_amount = 25000   # Amount currently raised
+target_amount = 500000 # 5 Lakhs
+raised_amount = 35000  # Amount currently raised
 progress_percent = min((raised_amount / target_amount) * 100, 100)
 display_percent = max(progress_percent, 2) # Ensures the green bar is at least slightly visible even at 1%
 
@@ -232,7 +232,7 @@ st.markdown("""
 <div class='story-card'>
     <h3>Our Challenge</h3>
     <p>I am writing to share a personal challenge my family is currently facing. My father, <b>Samir Singha Mahapatra</b>, was recently diagnosed with Stage 1 cancer.</p>
-    <p>We are entirely focused on his treatment and recovery, but the financial requirement for his comprehensive care is approximately <b>10–12 lakhs</b>.</p>
+    <p>We are entirely focused on his treatment and recovery, but the financial requirement for his comprehensive care is approximately <b>5 lakhs</b>.</p>
     <p>I have always valued the strength of our community, and I am humbly asking for your support during this time. Any contribution toward his treatment fund would significantly ease the burden on my family as we navigate this journey together.</p>
     <p>Thank you for your thoughts, prayers, and generosity.</p>
     <p style='margin-top: 25px; font-size: 1.1em;'><b>— Gourab Singha Mahapatra</b></p>
@@ -255,7 +255,7 @@ with col_qr:
     if qr_img:
         st.image(qr_img, use_container_width=True)
     else:
-        st.info("QR Code will appear here.")
+        st.info("QR Code will appear here. (Please rename your image file on GitHub to exactly 'qr_code.jpeg' or 'qr_code.png')")
         
     st.markdown("""
         <div class='upi-highlight'>ID: gourabsmp-1@oksbi</div>
