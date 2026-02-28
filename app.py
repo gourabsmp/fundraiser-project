@@ -328,3 +328,41 @@ with col_rep2:
 
 st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #a0aec0; font-size: 1.1em;'>For any queries, please reach out to me directly.</p>", unsafe_allow_html=True)
+
+# --- DATABASE: LEAVE A MESSAGE FORM ---
+st.markdown("<h2 class='section-header'>Leave a Message of Support</h2>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #718096; margin-bottom: 30px;'>Did you contribute or share the page? Leave a message for Samir and the family below.</p>", unsafe_allow_html=True)
+
+# Replace the placeholder URL with the Web App URL you copied from Google!
+GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzM1DEP3J3biL5ERQTTe_dVZIpfsNg-FFmhmacy8GwhDvY584ou0EtvsjKLHQGD6koX/exec"
+
+with st.form("support_form", clear_on_submit=True):
+    donor_name = st.text_input("Your Name")
+    donor_amount = st.text_input("Amount Donated (Optional - e.g., ₹500)")
+    donor_message = st.text_area("Your Message")
+    
+    submitted = st.form_submit_button("Send Message ❤️", use_container_width=True)
+
+    if submitted:
+        if donor_name and donor_message:
+            try:
+                import urllib.parse
+                import urllib.request
+                
+                # Package the data
+                data = urllib.parse.urlencode({
+                    'name': donor_name, 
+                    'amount': donor_amount, 
+                    'message': donor_message
+                }).encode('utf-8')
+                
+                # Send it to Google Sheets
+                req = urllib.request.Request(GOOGLE_SCRIPT_URL, data=data)
+                urllib.request.urlopen(req)
+                
+                st.success(f"Thank you, {donor_name}! Your message has been sent directly to Gourab's family.")
+                st.balloons()
+            except Exception as e:
+                st.error("Something went wrong connecting to the database. Please try again.")
+        else:
+            st.warning("Please enter at least your name and a message.")
